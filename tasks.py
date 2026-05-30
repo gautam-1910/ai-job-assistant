@@ -4,12 +4,13 @@ from agents import job_researcher, resume_tailor, cover_letter_writer
 def create_tasks(job_role, skills, projects):
 
     research_task = Task(
-        description=f"""Search for fresher {job_role} job openings in India. 
-        Find at least 3 relevant companies hiring freshers.
-        Focus on skills like: {skills}""",
-        expected_output="A list of 3 companies with job title, required skills, and apply link if available.",
-        agent=job_researcher
-    )
+    description=f"""Search ONCE for fresher {job_role} jobs in India.
+    Return ONLY 3 company names, job titles, and apply links.
+    Skills to match: {skills}
+    Be brief. No explanations.""",
+    expected_output="3 companies: name, job title, apply link only.",
+    agent=job_researcher
+)
 
     tailor_task = Task(
         description=f"""Given the job role: {job_role}
