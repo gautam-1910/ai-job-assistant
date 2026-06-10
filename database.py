@@ -12,13 +12,16 @@ load_dotenv()
 MONGO_URI = os.getenv("MONGO_URI")
 
 # Create a custom SSL context
-ssl_context = ssl.create_default_context()
+ssl_context = ssl.create_default_context(cafile=certifi.where())
+ssl_context.minimum_version = ssl.TLSVersion.TLSv1_2
 ssl_context.check_hostname = False
 ssl_context.verify_mode = ssl.CERT_NONE
 
 client = AsyncIOMotorClient(
     MONGO_URI,
+    tls=True,
     tlsAllowInvalidCertificates=True,
+    tlsAllowInvalidHostnames=True,
     serverSelectionTimeoutMS=30000
 )
 

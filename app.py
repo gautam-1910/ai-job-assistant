@@ -1,5 +1,7 @@
 import os
 import asyncio
+import nest_asyncio
+nest_asyncio.apply()
 import json
 import time
 from fastapi import FastAPI, UploadFile, File, HTTPException
@@ -36,7 +38,7 @@ def _debug_log(run_id: str, hypothesis_id: str, location: str, message: str, dat
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://localhost:3000", "http://localhost:3001"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -111,8 +113,8 @@ async def run_agents(request: RunRequest):
     
     tasks = create_tasks(
         job_role=resume["job_role"],
-        skills=resume["skills"],
-        projects=resume["projects"]
+        skills=resume["skills"][:300],
+        projects=resume["projects"][:300]
     )
     
     crew = Crew(
